@@ -58,5 +58,72 @@ class MyDbHelper (context: Context?):SQLiteOpenHelper(
         return id
     }
 
+    // get all data
+    fun getAllRecords(orderBy:String):ArrayList<ModelRecord>{
+        // orderBy query will allow to sort data e.g. newest/oldest first, name ascending/descending
+        // it will return list or record since we have used return type ArrayList<ModelRecord>
+        val recordList = ArrayList<ModelRecord>()
+        // query to select all records
+        val selectQuery = "SELECT * FROM ${Constants.TABLE_NAME} ORDER BY $orderBy"
+        val db = this.writableDatabase
+        val cursor = db.rawQuery(selectQuery, null)
+            // looping through all record and to list
+        if (cursor.moveToFirst()){
+            do {
+                val modelRecord = ModelRecord(
+                    ""+cursor.getInt(cursor.getColumnIndex(Constants.C_ID)),
+                    ""+cursor.getString(cursor.getColumnIndex(Constants.C_NAME)),
+                    ""+cursor.getString(cursor.getColumnIndex(Constants.C_IMAGE)),
+                    ""+cursor.getString(cursor.getColumnIndex(Constants.C_BIO)),
+                    ""+cursor.getString(cursor.getColumnIndex(Constants.C_PHONE)),
+                    ""+cursor.getString(cursor.getColumnIndex(Constants.C_EMAIL)),
+                    ""+cursor.getString(cursor.getColumnIndex(Constants.C_DOB)),
+                    ""+cursor.getString(cursor.getColumnIndex(Constants.C_ADDED_TIMESTAMP)),
+                    ""+cursor.getString(cursor.getColumnIndex(Constants.C_UPDATED_TIMESTAMP))
+                )
+                // add record to list
+                recordList.add(modelRecord)
+            }while (cursor.moveToNext())
+        }
+        // db close connection
+        db.close()
+        // return the queried result list
+        return recordList
+    }
+
+    // search data
+    fun searchRecords(query: String): ArrayList<ModelRecord>{
+        // it will return list or record since we have used return type ArrayList<ModelRecord>
+        val recordList = ArrayList<ModelRecord>()
+        // query to select all records
+        val selectQuery =
+            "SELECT * FROM ${Constants.TABLE_NAME} WHERE ${Constants.C_NAME} LIKE '%$query%'"
+        val db = this.writableDatabase
+        val cursor = db.rawQuery(selectQuery, null)
+        // looping through all record and to list
+        if (cursor.moveToFirst()){
+            do {
+                val modelRecord = ModelRecord(
+                    ""+cursor.getInt(cursor.getColumnIndex(Constants.C_ID)),
+                    ""+cursor.getString(cursor.getColumnIndex(Constants.C_NAME)),
+                    ""+cursor.getString(cursor.getColumnIndex(Constants.C_IMAGE)),
+                    ""+cursor.getString(cursor.getColumnIndex(Constants.C_BIO)),
+                    ""+cursor.getString(cursor.getColumnIndex(Constants.C_PHONE)),
+                    ""+cursor.getString(cursor.getColumnIndex(Constants.C_EMAIL)),
+                    ""+cursor.getString(cursor.getColumnIndex(Constants.C_DOB)),
+                    ""+cursor.getString(cursor.getColumnIndex(Constants.C_ADDED_TIMESTAMP)),
+                    ""+cursor.getString(cursor.getColumnIndex(Constants.C_UPDATED_TIMESTAMP))
+                )
+                // add record to list
+                recordList.add(modelRecord)
+            }while (cursor.moveToNext())
+        }
+        // db close connection
+        db.close()
+        // return the queried result list
+        return recordList
+    }
+
+
 
 }

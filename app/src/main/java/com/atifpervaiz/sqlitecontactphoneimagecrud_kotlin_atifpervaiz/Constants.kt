@@ -6,7 +6,7 @@ object Constants {
     // DB version
     const val DB_VERSION = 1
     // Table name
-    const val TABLE_NAME = "MY_RECORDS_TABLE"
+    const val TABLE_NAME = "MY_RECORDS_TABLE "
     // columns / fields of table
     const val C_ID = "ID"
     const val C_NAME = "NAME"
