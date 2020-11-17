@@ -2,7 +2,7 @@ package com.atifpervaiz.sqlitecontactphoneimagecrud_kotlin_atifpervaiz
 
 object Constants {
     // DbName
-    const val DB_NAME = "MY_RECORDS_TABLE"
+    const val DB_NAME = "MY_RECORDS_TABLE "
     // DB version
     const val DB_VERSION = 1
     // Table name
