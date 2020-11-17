@@ -156,6 +156,31 @@ class MyDbHelper (context: Context?):SQLiteOpenHelper(
         return recordList
     }
 
+    // Get total number of record
+    fun recordCount():Int{
+        val countQuery = "SELECT * FROM ${Constants.TABLE_NAME}"
+        val db = this.readableDatabase
+        val cursor = db.rawQuery(countQuery, null)
+        val count = cursor.count
+        cursor.close()
+        return count
+    }
 
+    // Delete (single) record using record ID
+    fun deleteRecord(id: String){
+        val  db = writableDatabase
+        db.delete(
+            Constants.TABLE_NAME,
+            "${Constants.C_ID} =?",
+            arrayOf(id)
+        )
+        db.close()
+    }
 
+    // Delete all records
+    fun deleteAllRecords(){
+        val db = writableDatabase
+        db.execSQL("DELETE FROM ${Constants.TABLE_NAME}")
+        db.close()
+    }
 }

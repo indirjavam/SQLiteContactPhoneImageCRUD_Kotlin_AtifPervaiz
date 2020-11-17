@@ -1,5 +1,6 @@
 package com.atifpervaiz.sqlitecontactphoneimagecrud_kotlin_atifpervaiz
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
@@ -15,6 +16,11 @@ class MainActivity : AppCompatActivity() {
 
     // orderBy / sort queries
     private val NEWEST_FIRST = "${Constants.C_ADDED_TIMESTAMP} DESC"
+    private val OLDEST_FIRST = "${Constants.C_ADDED_TIMESTAMP} ASC"
+    private val TITLE_ASC = "${Constants.C_NAME} ASC"
+    private val TITLE_DESC = "${Constants.C_NAME} DESC"
+
+    private var recentSortOrder = NEWEST_FIRST
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         // init dbHelper
         dbHelper = MyDbHelper(this)
 
-        loadRecords()
+        loadRecords(NEWEST_FIRST) // by default load newest first
 
         // click FloatingActionButton to start AddUpdateRecordActivity
         addRecordBtn.setOnClickListener {
@@ -33,8 +39,9 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun loadRecords() {
-        val adapterRecord = AdapterRecord(this, dbHelper.getAllRecords(NEWEST_FIRST))
+    private fun loadRecords(orderBy:String) {
+        recentSortOrder = orderBy
+        val adapterRecord = AdapterRecord(this, dbHelper.getAllRecords(orderBy))
 
         recordRv.adapter = adapterRecord
     }
@@ -45,9 +52,33 @@ class MainActivity : AppCompatActivity() {
         recordRv.adapter = adapterRecord
     }
 
-    override fun onResume() {
+    private fun sortDialog() {
+        // OPTIONS to display in dialog
+        val  options = arrayOf("Name Ascending", "Name Descending", "Newest", "Oldest")
+        // Dialog
+        val builder:AlertDialog.Builder = AlertDialog.Builder(this)
+        builder.setItems(options){_, which ->
+            // Handle Items
+            if (which==0){
+                // Name Ascending
+                loadRecords(TITLE_ASC)
+            }else if(which==1){
+                // Name Descending
+                loadRecords(TITLE_DESC)
+            }else if (which==2){
+                // Newest
+                loadRecords(NEWEST_FIRST)
+            }else if (which==3){
+                // Oldest first
+                loadRecords(OLDEST_FIRST)
+            }
+        }
+            .show()
+    }
+
+    public override fun onResume() {
         super.onResume()
-        loadRecords()
+        loadRecords(recentSortOrder)
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -83,8 +114,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // Handle menu item clicks
+        val id= item.itemId
+        if (id==R.id.action_sort){
+            sortDialog()
+        }
+        else if (id==R.id.action_deleteAll){
+            // Delete all records
+            dbHelper.deleteAllRecords()
+            onResume()
+        }
         return super.onOptionsItemSelected(item)
     }
-
 
 }

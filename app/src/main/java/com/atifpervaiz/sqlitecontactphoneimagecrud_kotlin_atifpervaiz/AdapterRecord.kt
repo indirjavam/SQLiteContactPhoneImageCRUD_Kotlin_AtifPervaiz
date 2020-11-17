@@ -18,9 +18,14 @@ class AdapterRecord(): RecyclerView.Adapter<AdapterRecord.HolderRecord>(){
     private var context:Context?=null
     private var recordList:ArrayList<ModelRecord>?=null
 
+    lateinit var dbHelper:MyDbHelper
+
+
     constructor(context: Context?, recordList: ArrayList<ModelRecord>?) : this() {
         this.context = context
         this.recordList = recordList
+
+        dbHelper = MyDbHelper(context)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HolderRecord {
@@ -127,6 +132,10 @@ class AdapterRecord(): RecyclerView.Adapter<AdapterRecord.HolderRecord>(){
                 context!!.startActivity(intent)
             }else{
                 // delete clicked
+
+                dbHelper.deleteRecord(id)
+                // Refresh record by calling Activity's onResume method
+                (context as MainActivity)!!.onResume()
 
             }
 

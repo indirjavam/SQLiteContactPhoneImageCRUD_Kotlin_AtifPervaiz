@@ -8,4 +8,14 @@
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         android:title="Search"/>
 
+    <item android:id="@+id/action_deleteAll"
+        android:icon="@drawable/ic_deleteall_white"
+        app:showAsAction="always"
+        android:title="Delete All"/>
+
+    <item android:id="@+id/action_sort"
+        android:icon="@drawable/ic_sort_white"
+        app:showAsAction="always"
+        android:title="Sort"/>
+
 </menu>
