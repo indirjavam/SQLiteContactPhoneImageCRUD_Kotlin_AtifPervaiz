@@ -31,11 +31,18 @@ class AddUpdateRecordActivity : AppCompatActivity() {
     private lateinit var  storagePermission:Array<String>  // only storage
     // variables that will contain data to save in database
     private var imageUri:Uri? = null
+    private var id:String? =""
     private var name:String? =""
     private var phone:String? =""
     private var email:String? =""
     private var dob:String? =""
     private var bio:String? =""
+    private var addedTime:String? =""
+    private var updatedTime:String? =""
+
+    private var isEditMode = false
+
+
 
     // actionBar
     private var actionBar:ActionBar? = null
@@ -53,6 +60,44 @@ class AddUpdateRecordActivity : AppCompatActivity() {
         //back button in actionbar
         actionBar!!.setDisplayHomeAsUpEnabled(true)
         actionBar!!.setDisplayShowHomeEnabled(true)
+
+        // get data from intent
+        val intent = intent
+        isEditMode = intent.getBooleanExtra("isEditMode", false)
+        if (isEditMode){
+            // editing data, came here from adapter
+            actionBar!!.title = "Update Record"
+
+            id = intent.getStringExtra("ID")
+            name = intent.getStringExtra("NAME")
+            phone = intent.getStringExtra("PHONE")
+            email = intent.getStringExtra("EMAIL")
+            dob = intent.getStringExtra("DOB")
+            bio = intent.getStringExtra("BIO")
+            imageUri = Uri.parse(intent.getStringExtra("IMAGE"))
+            addedTime = intent.getStringExtra("ADDED_TIME")
+            updatedTime = intent.getStringExtra("UPDATED_TIME")
+
+            // -------Set Data to views------
+            /* if user did not attached image while saving record then
+            * imageUri value be "NULL", so set default image */
+            if (imageUri.toString() == "null"){
+                // no image
+                profileIv.setImageResource(R.drawable.ic_person_black)
+            }else{
+                // have image
+                profileIv.setImageURI(imageUri)
+            }
+            nameEt.setText(name)
+            phoneEt.setText(phone)
+            emailEt.setText(email)
+            dobEt.setText(dob)
+            biolEt.setText(bio)
+        }
+        else{
+            // adding new data, came here from MainActivity
+            actionBar!!.title = "Add Record"
+        }
 
         // init DB helper class
         dbHelper = MyDbHelper(this)
@@ -84,19 +129,42 @@ class AddUpdateRecordActivity : AppCompatActivity() {
         dob = "" + dobEt.text.toString().trim()
         bio = "" + biolEt.text.toString().trim()
 
-        // save data to DB
-        val timeStamp = System.currentTimeMillis()
-        val id = dbHelper.inserRecord(
-            ""+name,
-            ""+imageUri,
-            ""+bio,
-            ""+phone,
-            ""+email,
-            ""+dob,
-            ""+timeStamp,
-            ""+timeStamp
-        )
-        Toast.makeText(this,"Record Added against ID $id", Toast.LENGTH_SHORT).show()
+        if (isEditMode){
+            // editing
+
+            val timeStamp = "${System.currentTimeMillis()}"
+            dbHelper?.updateRecord(
+                "$id",
+                "$name",
+                "$imageUri",
+                "$bio",
+                "$phone",
+                "$email",
+                "$dob",
+                "$addedTime",
+                "$timeStamp"
+            )
+            Toast.makeText(this,"Updated...", Toast.LENGTH_SHORT).show()
+
+        }else{
+            // adding new
+
+            // save data to DB
+            val timeStamp = System.currentTimeMillis()
+            val id = dbHelper.inserRecord(
+                ""+name,
+                ""+imageUri,
+                ""+bio,
+                ""+phone,
+                ""+email,
+                ""+dob,
+                "$timeStamp",
+                "$timeStamp"
+            )
+            Toast.makeText(this,"Record Added against ID $id", Toast.LENGTH_SHORT).show()
+        }
+
+
     }
 
     private fun imagePickDialog() {

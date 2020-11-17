@@ -1,5 +1,6 @@
 package com.atifpervaiz.sqlitecontactphoneimagecrud_kotlin_atifpervaiz
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
@@ -74,8 +75,64 @@ class AdapterRecord(): RecyclerView.Adapter<AdapterRecord.HolderRecord>(){
 
         // handle more button click: show delete/edit options
         holder.morebtn.setOnClickListener {
-            // will implement later
+            // show more options e.g. edit, delete
+            showMoreOptions(
+                position,
+                id,
+                name,
+                phone,
+                email,
+                dob,
+                bio,
+                image,
+                addedTime,
+                updatedTime
+            )
         }
+
+    }
+
+    private fun showMoreOptions(
+        position: Int,
+        id: String,
+        name: String,
+        phone: String,
+        email: String,
+        dob: String,
+        bio: String,
+        image: String,
+        addedTime: String,
+        updatedTime: String
+    ) {
+        // options to display in dialog
+        val options = arrayOf("Edit", "Delete")
+        // dialog
+        val dialog:AlertDialog.Builder = AlertDialog.Builder(context)
+        // set items and clickListener
+        dialog.setItems(options) { dialog, which ->
+            // handle item clicks
+            if (which==0){
+                // edit clicked
+                val intent = Intent(context, AddUpdateRecordActivity::class.java)
+                intent.putExtra("ID", id)
+                intent.putExtra("NAME", name)
+                intent.putExtra("PHONE", phone)
+                intent.putExtra("EMAIL", email)
+                intent.putExtra("DOB", dob)
+                intent.putExtra("BIO", bio)
+                intent.putExtra("IMAGE", image)
+                intent.putExtra("ADDED_TIME", addedTime)
+                intent.putExtra("UPDATED_TIME", updatedTime)
+                intent.putExtra("isEditMode", true) // want to update existing record, set it true
+                context!!.startActivity(intent)
+            }else{
+                // delete clicked
+
+            }
+
+        }
+        // show dialog
+        dialog.show()
 
     }
 

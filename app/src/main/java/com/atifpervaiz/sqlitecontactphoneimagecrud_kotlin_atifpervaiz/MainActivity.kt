@@ -27,7 +27,9 @@ class MainActivity : AppCompatActivity() {
 
         // click FloatingActionButton to start AddUpdateRecordActivity
         addRecordBtn.setOnClickListener {
-            startActivity(Intent(this, AddUpdateRecordActivity::class.java))
+            val intent = Intent(this, AddUpdateRecordActivity::class.java)
+            intent.putExtra("isEditMode", false) // want to add new record, set it false
+            startActivity(intent)
         }
     }
 

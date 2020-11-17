@@ -58,6 +58,38 @@ class MyDbHelper (context: Context?):SQLiteOpenHelper(
         return id
     }
 
+    // update record to db
+    fun updateRecord(id:String,
+                     name: String?,
+                     image: String?,
+                     bio: String?,
+                     phone: String?,
+                     email: String?,
+                     dob: String?,
+                     addedTime: String?,
+                     updatedTime: String?):Long
+     {
+        // get writeAble database
+        val db = this.writableDatabase
+        val values = ContentValues()
+        // id will be inserted automatically as we set AUTOINCREMENT in query
+        // insert data
+        values.put(Constants.C_NAME, name)
+        values.put(Constants.C_IMAGE, image)
+        values.put(Constants.C_BIO, bio)
+        values.put(Constants.C_PHONE, phone)
+        values.put(Constants.C_EMAIL, email)
+        values.put(Constants.C_DOB, dob)
+        values.put(Constants.C_ADDED_TIMESTAMP, addedTime)
+        values.put(Constants.C_UPDATED_TIMESTAMP, updatedTime)
+
+         // update
+         return db.update(Constants.TABLE_NAME,
+             values,
+             "${Constants.C_ID}=?",
+             arrayOf(id)).toLong()
+    }
+
     // get all data
     fun getAllRecords(orderBy:String):ArrayList<ModelRecord>{
         // orderBy query will allow to sort data e.g. newest/oldest first, name ascending/descending
