@@ -9,6 +9,7 @@
     app:cardBackgroundColor="@color/colorWhite">
 
     <RelativeLayout
+        android:id="@+id/oldumu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
@@ -47,6 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Phone"
+                android:autoLink="phone"
                 android:textColor="@color/colorBlack"
                 android:textSize="18sp"/>
             <!--TextView: User Email-->
@@ -65,6 +67,16 @@
                 android:text="Dob"
                 android:textColor="@color/colorBlack"
                 android:textSize="18sp"/>
+
+            <ImageView
+                android:id="@+id/main_item_contact"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:scaleType="center"
+                android:src="@drawable/icon_call_contact" />
+
+
         </LinearLayout>
 
         <!--ImageButton: Show more options like delete, edit etc-->
@@ -76,7 +88,10 @@
             android:src="@drawable/ic_more_black"
             android:background="@color/colorWhite"
             android:layout_alignParentRight="true"/>
+
+
     </RelativeLayout>
+
 
 
 

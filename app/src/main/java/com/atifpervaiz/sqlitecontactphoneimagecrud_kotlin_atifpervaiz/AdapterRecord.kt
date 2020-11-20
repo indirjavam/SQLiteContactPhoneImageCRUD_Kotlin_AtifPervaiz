@@ -10,7 +10,9 @@ import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.activity_record_detail.*
 
 // Adapter class for recyclerView
 class AdapterRecord(): RecyclerView.Adapter<AdapterRecord.HolderRecord>(){
@@ -76,6 +78,15 @@ class AdapterRecord(): RecyclerView.Adapter<AdapterRecord.HolderRecord>(){
             val intent = Intent(context, RecordDetailActivity::class.java)
             intent.putExtra("RECORD_ID", id)
             context!!.startActivity(intent)
+
+
+        }
+
+
+        holder.main_item_contact.setOnClickListener {
+            val intent =
+                Intent(Intent.ACTION_CALL, Uri.parse("tel:${model.phone}"))
+            context?.startActivity(intent)
         }
 
         // handle more button click: show delete/edit options
@@ -155,6 +166,7 @@ class AdapterRecord(): RecyclerView.Adapter<AdapterRecord.HolderRecord>(){
         var dobTv:TextView = itemView.findViewById(R.id.dobTv)
         var morebtn:ImageButton = itemView.findViewById(R.id.moreBtn)
 
+        var main_item_contact: ImageView = itemView.findViewById(R.id.main_item_contact)
     }
 
 

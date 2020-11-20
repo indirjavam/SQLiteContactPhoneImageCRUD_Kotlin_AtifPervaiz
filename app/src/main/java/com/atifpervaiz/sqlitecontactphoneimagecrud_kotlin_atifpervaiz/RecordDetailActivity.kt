@@ -1,11 +1,13 @@
 package com.atifpervaiz.sqlitecontactphoneimagecrud_kotlin_atifpervaiz
 
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_record_detail.*
 import java.util.*
+
 
 class RecordDetailActivity : AppCompatActivity() {
 
@@ -35,6 +37,7 @@ class RecordDetailActivity : AppCompatActivity() {
         recordId = intent.getStringExtra("RECORD_ID")
 
         showRecordDetail()
+
     }
 
     private fun showRecordDetail() {
@@ -77,6 +80,12 @@ class RecordDetailActivity : AppCompatActivity() {
                 dobTv.text = dob
                 addedDateTv.text = timeAdded
                 updatedDateTv.text = timeUpdated
+
+                main_item_contact.setOnClickListener {
+                    val intent =
+                        Intent(Intent.ACTION_CALL, Uri.parse("tel:$phone"))
+                    startActivity(intent)
+                }
 
                 // if user dosn't attach image then imageUri will be null, so set default image in that case
                 if (image == "null"){
