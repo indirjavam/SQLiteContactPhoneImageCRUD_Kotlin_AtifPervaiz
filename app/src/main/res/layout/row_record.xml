@@ -30,7 +30,7 @@
             android:layout_marginEnd="5dp"
             android:layout_marginStart="5dp"
             android:layout_toEndOf="@+id/profileIv"
-            android:layout_toStartOf="@id/moreBtn"
+            android:layout_toStartOf="@id/main_item_contact"
             android:orientation="vertical"
             android:layout_toRightOf="@+id/profileIv"
             android:layout_toLeftOf="@id/moreBtn">
@@ -48,7 +48,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Phone"
-                android:autoLink="phone"
                 android:textColor="@color/colorBlack"
                 android:textSize="18sp"/>
             <!--TextView: User Email-->
@@ -68,14 +67,6 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="18sp"/>
 
-            <ImageView
-                android:id="@+id/main_item_contact"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:scaleType="center"
-                android:src="@drawable/icon_call_contact" />
-
 
         </LinearLayout>
 
@@ -85,14 +76,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
+            android:layout_marginTop="55dp"
             android:src="@drawable/ic_more_black"
             android:background="@color/colorWhite"
             android:layout_alignParentRight="true"/>
 
+        <ImageView
+            android:id="@+id/main_item_contact"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_call"
+            android:background="@color/colorWhite"
+            android:layout_alignParentRight="true" />
 
     </RelativeLayout>
-
-
 
 
 </androidx.cardview.widget.CardView>
